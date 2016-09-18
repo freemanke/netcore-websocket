@@ -17,13 +17,27 @@ namespace Client
 
     class Program
     {
-        static string url = "ws://localhost:15000";
+        static string url = "";
         public static bool isRunning = true;
 
         static void Main(string[] args)
         {
             var threadCount = 100;
-            if (args.Length >= 1) int.TryParse(args[0], out threadCount);
+            var host = "localhost";
+            var port = 15000;
+            if (args.Length >= 1)
+            {
+                var c = 0;
+                if (int.TryParse(args[0], out c)) threadCount = c;
+            }
+            if (args.Length >= 2) host = args[1];
+            if (args.Length >= 3)
+            {
+                var p = 0;
+                if (int.TryParse(args[2], out p)) port = p;
+            }
+
+            url = $"ws://{host}:{port}";
             for (var i = 0; i < threadCount; i++)
             {
                 var username = Guid.NewGuid().ToString().Substring(0, 8);
